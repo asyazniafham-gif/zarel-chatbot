@@ -485,6 +485,27 @@ Internet
 
 ---
 
+## Contributors
+
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/pendakwahteknologi">
+        <img src="https://github.com/pendakwahteknologi.png" width="100" style="border-radius:50%;" alt="Pendakwah Teknologi"><br>
+        <sub><b>Pendakwah Teknologi</b></sub>
+      </a>
+      <br>
+      <sub>Architecture, Development, Deployment</sub>
+    </td>
+  </tr>
+</table>
+
+Built with grit by the [Pendakwah Teknologi](https://pendakwah.tech) team — innovating digital experiences with expert content, training & event solutions.
+
+Want to contribute? Fork the repo, make your changes, and open a pull request.
+
+---
+
 ## License
 
 Proprietary. Copyright [Pendakwah Teknologi](https://pendakwah.tech).
