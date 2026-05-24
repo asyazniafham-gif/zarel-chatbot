@@ -29,14 +29,13 @@ There is an **additional RM3 shipping surcharge** for deliveries to Sabah and Sa
 2. Select your product and add to cart
 3. Choose size/variant (if applicable)
 4. Enter your shipping address
-5. Select payment method (TNG, FPX, credit/debit card, COD for selected areas)
+5. Select payment method (FPX or debit/credit card)
 6. Confirm your order
 
 ## Payment Methods
-- Touch 'n Go (TNG eWallet)
 - FPX (online banking)
 - Credit / debit card
-- COD (cash on delivery) — selected areas only
+- No COD (cash on delivery)
 
 ## Returns & Refunds
 - Return period: 7 days from date of receipt
@@ -84,13 +83,13 @@ Yes. Sabah and Sarawak: RM3 extra on top of RM5 standard shipping = RM8 total. R
 No. Once your order has been shipped, the courier will deliver to the registered address on the order. Please ensure your address is correct before confirming your purchase.
 
 **Is COD available?**
-COD is available for selected areas only. Check at checkout.
+No. We do not offer Cash on Delivery. Payment is via FPX (online banking) or debit/credit card only.
 
 **Item is out of stock — when will it restock?**
 Follow TikTok Shop Zarel Sevan for restock notifications.
 
 **How do I track my order?**
-Your tracking number will be sent via TikTok Shop once the item is shipped.
+Your tracking number will be sent to your email once your order is shipped. You can also contact us at admin@zarelsevan.my or WhatsApp +60146292068 to check your order status.
 
 **Can I exchange for a different size?**
 Size exchanges are subject to stock availability. Contact us within 7 days of receipt.
