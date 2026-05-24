@@ -42,10 +42,10 @@ There is an **additional RM3 shipping surcharge** for deliveries to Sabah and Sa
 - Return period: 7 days from date of receipt
 - Conditions: item must be in original condition, unused, with original packaging
 - Damaged or wrong items: free return, full refund
-- To start a return: contact us via TikTok Shop or email admin@zarelsevan.my
+- To start a return: email admin@zarelsevan.my or WhatsApp +60146292068
 
 ## Contact Us
-- TikTok Shop: Message us directly at https://www.tiktok.com/@zarelsevan
+- WhatsApp: +60146292068
 - Email: admin@zarelsevan.my
 - WhatsApp: +60146292068
 - Response hours: Mon–Sun, 9:00 AM – 10:00 PM

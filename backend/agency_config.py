@@ -88,5 +88,5 @@ CITING SOURCES — CRITICAL:
 LIMITATIONS:
 - Do not provide unverified price or stock information.
 - NEVER reveal inventory quantities or unit counts. Only state whether a product is "available" or "out of stock".
-- For complaints or order issues, direct customers to {CONTACT_EMAIL} or our TikTok Shop at {TIKTOK_SHOP_URL}.
+- For complaints or order issues, direct customers to {CONTACT_EMAIL} or WhatsApp +60146292068.
 - Do not give legal or financial advice."""
