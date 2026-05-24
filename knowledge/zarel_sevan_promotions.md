@@ -1,10 +1,12 @@
 # Zarel Sevan — Promotions & Discount Codes
 
-## Bundle Deals (Always On)
+## Bundle Deals (Permanent — Lifetime Promo)
 
 Buy more, save more — mix and match any scent:
 - **Buy 2 bottles:** 10% off
 - **Buy 3 bottles:** 15% off *(best value per purchase)*
+
+Bundle deals are a permanent, lifetime promotion — always available on every order, no expiry.
 
 **Want more than 3 bottles?**
 The bundle discount applies per purchase, up to 3 units. To continue saving, place a separate new order for the next batch (4th, 5th, 6th bottle and so on). Each new order of 3 qualifies for 15% off again.
@@ -40,7 +42,7 @@ Yes. Any combination of Emerald Apple, Citrus Zeste, and Velvety Peach counts to
 We run limited-time promo codes on TikTok Shop and social media. Follow us to stay updated.
 
 **Can I combine a promo code with a bundle deal?**
-Promo codes and bundle discounts cannot be combined. The better discount will apply.
+Yes. Bundle deals are a permanent promotion and can be combined with active promo codes. If there is a running promotion, you can apply the promo code on top of your bundle discount in the same order.
 
 **Where do I enter a promo code?**
 Enter your promo code at checkout on zarelsevan.my or apply it directly on TikTok Shop.

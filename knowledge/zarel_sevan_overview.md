@@ -40,13 +40,15 @@ Zarel Sevan is a Malaysian e-commerce store operating on TikTok Shop. We offer q
 - Response hours: Mon–Sun, 9:00 AM – 10:00 PM
 - We aim to reply immediately. If you have not received a response within 1 hour, please follow up via WhatsApp at +60146292068 or email admin@zarelsevan.my.
 
-## Bundle Deals
+## Bundle Deals (Permanent — Lifetime Promo)
 
 Save more when you buy more:
 - **Buy 2 bottles:** 10% off
 - **Buy 3 bottles:** 15% off *(best value)*
 
-Bundle deals apply to any combination of scents (Emerald Apple, Citrus Zeste, Velvety Peach).
+Bundle deals apply to any combination of scents (Emerald Apple, Citrus Zeste, Velvety Peach). This is a permanent, lifetime promotion — no expiry, always available.
+
+Bundle discounts can be combined with active promo codes. If there is a running promotion, you can stack the promo code with the bundle deal in the same order.
 
 **Buying more than 3 bottles?** Place your order in batches of 3. Complete one order of 3 bottles first, then place a new separate order for the next batch. Each order of 3 qualifies for 15% off, so you keep saving no matter how many bottles you need.
 
