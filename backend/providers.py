@@ -219,11 +219,11 @@ def ingest_knowledge_to_chroma(knowledge_path: str = None):
             file_ext = filepath.rsplit('.', 1)[-1].lower()
 
             if file_ext == 'pdf':
-                doc_type = "Dokumen PDF"
+                doc_type = "PDF Document"
             elif file_ext == 'docx':
-                doc_type = "Dokumen DOCX"
+                doc_type = "DOCX Document"
             else:
-                doc_type = "Fail Pengetahuan"
+                doc_type = "Knowledge Base"
 
             # Build page offset map for PDFs (find all [Halaman N] markers)
             page_markers = []
@@ -474,7 +474,7 @@ Reply with ONLY 3 lines, one question per line. No numbers or bullets:"""
             page_label = f" (Halaman {page})" if page else ""
             contexts.append(f"[SUMBER - {filename}{page_label}]\n{data['doc']}")
             source_entry = {
-                "type": "Dokumen (Hybrid Search)",
+                "type": "Document (Hybrid Search)",
                 "filename": filename,
                 "page_content": data["doc"][:500],
                 "score": round(data["rrf_score"], 4),
