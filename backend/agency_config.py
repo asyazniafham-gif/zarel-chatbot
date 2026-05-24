@@ -1,94 +1,91 @@
 """
-Agency Configuration — Pendakwah Teknologi
+Agency Configuration — Zarel Sevan
 =========================================================
-AI Chatbot for Pendakwah Teknologi Solutions
+AI Chatbot for Zarel Sevan TikTok Shop e-commerce
 """
 
-AGENCY_ID = "pt"
-AGENCY_NAME = "Pendakwah Teknologi Solutions"
-AGENCY_NAME_EN = "Pendakwah Teknologi Solutions"
-AGENCY_ACRONYM = "PT"
-AGENCY_WEBSITE = "https://pendakwah.tech"
+AGENCY_ID = "zs"
+AGENCY_NAME = "Zarel Sevan"
+AGENCY_NAME_EN = "Zarel Sevan"
+AGENCY_ACRONYM = "ZS"
+AGENCY_WEBSITE = "https://zarelsevan.my"
 
-CONTACT_ADDRESS = "Pendakwah Teknologi Solutions, Kuala Lumpur, Malaysia"
-CONTACT_PHONE = "03-8684 1980"
+CONTACT_ADDRESS = "Zarel Sevan, Malaysia"
+CONTACT_PHONE = ""
 CONTACT_FAX = ""
-CONTACT_EMAIL = "contact@pendakwah.tech"
-CONTACT_HOURS = "Isnin-Jumaat: 9:00 AM - 6:00 PM"
+CONTACT_EMAIL = "admin@zarelsevan.my"
+CONTACT_HOURS = "Mon–Sun: 9:00 AM – 10:00 PM"
+TIKTOK_SHOP_URL = "https://www.tiktok.com/@zarelsevan"
 
 INTERNAL_KEYWORDS = [
-    "pendakwah", "pendakwah teknologi", "pt",
-    # Services
-    "latihan", "training", "ai", "artificial intelligence",
-    "keselamatan siber", "cybersecurity", "networking", "5g", "wifi",
-    "video", "production", "content creation", "media",
-    "digital", "digital transformation", "strategi digital",
-    # Topics
-    "kursus", "course", "bengkel", "workshop",
-    "acara", "event", "hosting", "speaking",
-    "endorsement", "brand", "branding",
-    "teknologi", "technology", "inovasi", "innovation",
-    "chatbot", "automasi", "automation",
-    "konsultasi", "consulting",
+    "zarel", "zarel sevan", "zs",
+    # Products
+    "produk", "product", "item", "barang",
+    "harga", "price", "diskaun", "discount", "promosi", "promotion",
+    "stok", "stock", "ready", "available",
+    # Shopping
+    "tiktok shop", "tiktok", "shop", "beli", "buy", "order", "pesanan",
+    "cod", "cash on delivery", "bayar", "payment",
+    "hantar", "pos", "shipping", "delivery", "penghantaran",
+    "tracking", "jejak",
+    # Returns / Service
+    "pulang", "return", "refund", "tukar", "exchange", "warranty", "waranti",
+    "rosak", "complaint", "aduan",
+    # Affiliation
+    "affiliate", "komisen", "commission", "reseller", "dropship",
 ]
 
 EXTERNAL_KEYWORDS = [
-    "cuaca", "weather", "jadual", "schedule",
-    "perbandingan", "comparison", "statistik", "statistics",
-    "terkini", "semasa", "terbaru", "berita", "news", "current",
-    "kemaskini", "update",
+    "cuaca", "weather", "berita", "news",
+    "perbandingan", "comparison", "pesaing", "competitor",
+    "terkini", "semasa", "terbaru", "current",
 ]
 
 NEWS_KEYWORDS = [
-    "aktiviti terkini", "berita terkini",
-    "program terkini", "perkembangan terkini",
+    "promosi terkini", "produk terbaru", "kemaskini stok",
 ]
 
 NEWS_URLS = []
-NEWS_BASE_URL = "https://pendakwah.tech"
-WEB_SEARCH_PREFIX = "Pendakwah Teknologi digital transformation training AI"
+NEWS_BASE_URL = "https://zarelsevan.my"
+WEB_SEARCH_PREFIX = "Zarel Sevan TikTok Shop Malaysia produk"
 
 WEBSITE_LIVE_PAGES = []
 WEBSITE_KEYWORD_MAPPING = {}
 
 CHROMA_COLLECTION_NAME = f"{AGENCY_ID}_knowledge"
 
-INSTALL_DIR = f"/opt/{AGENCY_ID}-chatbot"
-FRONTEND_DIR = f"/var/www/{AGENCY_ID}-chatbot/public"
+INSTALL_DIR = f"/app"
+FRONTEND_DIR = f"/app/frontend"
 SERVICE_NAME = f"{AGENCY_ID}-chatbot"
-PORT = 8003
+PORT = 8010
 CHROMA_DB_DIR = f"{INSTALL_DIR}/chroma_db"
 KNOWLEDGE_DIR = f"{INSTALL_DIR}/knowledge"
 DOCUMENTS_DIR = f"{INSTALL_DIR}/documents"
 LOG_DIR = f"{INSTALL_DIR}/logs"
 HF_CACHE_DIR = f"{INSTALL_DIR}/.hf_cache"
 
-SYSTEM_PROMPT = f"""Kamu adalah pembantu AI rasmi untuk {AGENCY_NAME} — sebuah syarikat transformasi digital dan latihan yang pakar dalam pembangunan profesional, penciptaan kandungan, dan penyelesaian media.
+SYSTEM_PROMPT = f"""You are the official AI assistant for {AGENCY_NAME} — a Malaysian TikTok Shop selling quality products.
 
-TENTANG {AGENCY_NAME}:
-{AGENCY_NAME} memperkasakan perniagaan untuk meningkatkan kehadiran digital melalui strategi inovatif, pengeluaran berkualiti tinggi, dan latihan teknologi terkini.
+ABOUT {AGENCY_NAME}:
+{AGENCY_NAME} is a Malaysian e-commerce store operating on TikTok Shop. We offer quality products with fast nationwide delivery and friendly customer service.
+TikTok Shop: {TIKTOK_SHOP_URL}
+Website: {AGENCY_WEBSITE}
+Email: {CONTACT_EMAIL}
+Hours: {CONTACT_HOURS}
 
-PERKHIDMATAN UTAMA:
-- Latihan AI dan keselamatan siber (dalam talian dan di premis)
-- Pengajaran teknikal rangkaian, 5G, dan Wi-Fi
-- Pengeluaran video dan penciptaan kandungan kreatif
-- Endorsement jenama dan perkhidmatan media digital
-- Pengehosan acara dan penglibatan ucapan profesional
-- Perundingan strategi digital tersuai
+HOW TO RESPOND:
+1. Always respond in English. If the customer writes in Malay, still reply in English.
+2. Be direct and concise. Do not repeat the question or use filler phrases.
+3. Write like a helpful, friendly store assistant.
+4. Do not use emojis.
+5. For questions about price, stock, or orders — refer to the knowledge base information only.
 
-CARA JAWAB:
-1. Jawab terus. Jangan ulang soalan. Jangan guna ayat pembuka klise.
-2. Tulis seperti rakan sekerja yang berpengalaman — profesional tapi mudah difahami.
-3. Gunakan Bahasa Melayu sebagai bahasa utama. Istilah teknikal boleh kekal dalam Bahasa Inggeris jika itu lebih jelas.
-4. JANGAN guna emoji atau emotikon.
-5. Jawapan mestilah padat dan terstruktur. Guna senarai bernombor atau bullet points jika sesuai.
+CITING SOURCES — CRITICAL:
+- If information comes from the knowledge base, state the source clearly.
+- If you don't have enough information, tell the customer and direct them to contact us.
+- NEVER fabricate product details, prices, or stock information not found in the context.
 
-MERUJUK SUMBER — KRITIKAL:
-- Jika maklumat berasal dari pangkalan pengetahuan, nyatakan sumber dengan tepat.
-- Jika konteks yang diberikan tidak mencukupi untuk menjawab, nyatakan terus terang.
-- JANGAN SEKALI-KALI reka maklumat atau sumber yang tidak wujud dalam konteks.
-
-BATASAN:
-- Jangan beri tafsiran undang-undang atau nasihat perundangan.
-- Jangan reka maklumat. Jika tak pasti, cakap terus terang.
-- Untuk pertanyaan di luar skop, cadangkan hubungi {AGENCY_NAME} di {CONTACT_EMAIL} atau layari {AGENCY_WEBSITE}."""
+LIMITATIONS:
+- Do not provide unverified price or stock information.
+- For complaints or order issues, direct customers to {CONTACT_EMAIL} or our TikTok Shop at {TIKTOK_SHOP_URL}.
+- Do not give legal or financial advice."""

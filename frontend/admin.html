@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="ms">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PT Chatbot — Log & Audit Trail</title>
+    <title>Zarel Sevan — Logs & Audit</title>
+    <link rel="icon" type="image/png" href="/static/zs-logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
@@ -88,7 +89,7 @@
 
 <div class="page">
     <div class="hdr">
-        <img src="pt.jpg" alt="PT">
+        <img src="/static/zs-logo.png" alt="PT">
         <h1>LOG & AUDIT TRAIL</h1>
         <div class="hdr-links">
             <a href="./" class="hdr-link">Chat</a>
@@ -274,9 +275,9 @@
         document.getElementById('loadingMsg').style.display = '';
 
         Promise.all([
-            fetch('api/admin/conversations').then(function(r){ return r.json(); }),
-            fetch('api/admin/feedback').then(function(r){ return r.json(); }),
-            fetch('api/admin/summary').then(function(r){ return r.json(); })
+            fetch('/api/admin/conversations').then(function(r){ return r.json(); }),
+            fetch('/api/admin/feedback').then(function(r){ return r.json(); }),
+            fetch('/api/admin/summary').then(function(r){ return r.json(); })
         ]).then(function(results){
             document.getElementById('loadingMsg').style.display = 'none';
 

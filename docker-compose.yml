@@ -1,0 +1,27 @@
+services:
+  zs-chatbot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: zs-chatbot
+    restart: unless-stopped
+    env_file:
+      - backend.env
+    volumes:
+      - zs_chatbot_chroma:/app/chroma_db
+      - zs_chatbot_hf:/app/.hf_cache
+      - zs_chatbot_logs:/app/logs
+      - ./knowledge:/app/knowledge:ro
+    networks:
+      - zarel-net
+    ports:
+      - "8010:8010"
+
+volumes:
+  zs_chatbot_chroma:
+  zs_chatbot_hf:
+  zs_chatbot_logs:
+
+networks:
+  zarel-net:
+    external: true

@@ -1,7 +1,7 @@
 """
-RAG Provider — PT Chatbot
-ChromaDB + Mesolitica Embeddings + OpenAI GPT-4o
-GPU-accelerated on GX10 Grace Blackwell
+RAG Provider — Zarel Sevan Chatbot
+ChromaDB + Mesolitica Embeddings + DeepSeek
+CPU mode for AMD GPU (no CUDA)
 """
 
 import os
@@ -22,7 +22,7 @@ DEVICE = os.environ.get("EMBEDDING_DEVICE", "cuda" if torch.cuda.is_available() 
 CROSS_ENCODER_DEVICE = os.environ.get("CROSS_ENCODER_DEVICE", DEVICE)
 EMBEDDING_BATCH_SIZE = int(os.environ.get("EMBEDDING_BATCH_SIZE", "256"))
 INGEST_BATCH_SIZE = int(os.environ.get("INGEST_BATCH_SIZE", "500"))
-print(f"[GX10] Compute device: {DEVICE} | Cross-encoder: {CROSS_ENCODER_DEVICE} | "
+print(f"[ZS] Compute device: {DEVICE} | Cross-encoder: {CROSS_ENCODER_DEVICE} | "
       f"Embedding batch: {EMBEDDING_BATCH_SIZE} | Ingest batch: {INGEST_BATCH_SIZE}")
 
 
@@ -62,10 +62,10 @@ def get_embedding_model():
             "LOCAL_EMBEDDING_MODEL",
             "mesolitica/mistral-embedding-191m-8k-contrastive"
         )
-        print(f"[PT] Loading embedding model: {model_name} -> {DEVICE}")
+        print(f"[ZS] Loading embedding model: {model_name} -> {DEVICE}")
         _embedding_model = SentenceTransformer(model_name, device=DEVICE)
         _ = _embedding_model.encode(["warmup"], device=DEVICE, batch_size=1)
-        print(f"[PT] Embedding model loaded on {DEVICE}")
+        print(f"[ZS] Embedding model loaded on {DEVICE}")
     return _embedding_model
 
 
@@ -80,8 +80,8 @@ def get_chroma_collection():
         import chromadb
         from agency_config import CHROMA_COLLECTION_NAME
 
-        persist_dir = os.environ.get("CHROMA_PERSIST_DIR", "/opt/pt-chatbot/chroma_db")
-        print(f"[PT] Initialising ChromaDB at: {persist_dir}")
+        persist_dir = os.environ.get("CHROMA_PERSIST_DIR", "/app/chroma_db")
+        print(f"[ZS] Initialising ChromaDB at: {persist_dir}")
         client = chromadb.PersistentClient(path=persist_dir)
         _chroma_collection = client.get_or_create_collection(
             name=CHROMA_COLLECTION_NAME,
@@ -93,7 +93,7 @@ def get_chroma_collection():
                 "hnsw:num_threads": 8,
             }
         )
-        print(f"[PT] ChromaDB collection ready: {_chroma_collection.count()} documents")
+        print(f"[ZS] ChromaDB collection ready: {_chroma_collection.count()} documents")
     return _chroma_collection
 
 
@@ -112,7 +112,7 @@ def extract_text_from_pdf(filepath: str) -> str:
         doc.close()
         return "\n".join(text_parts).strip()
     except Exception as e:
-        print(f"[PT] PDF extraction error for {filepath}: {e}")
+        print(f"[ZS] PDF extraction error for {filepath}: {e}")
         return ""
 
 
@@ -131,7 +131,7 @@ def extract_text_from_docx(filepath: str) -> str:
                     text_parts.append(row_text)
         return "\n".join(text_parts).strip()
     except Exception as e:
-        print(f"[PT] DOCX extraction error for {filepath}: {e}")
+        print(f"[ZS] DOCX extraction error for {filepath}: {e}")
         return ""
 
 
@@ -146,7 +146,7 @@ def extract_text_from_file(filepath: str) -> str:
             with open(filepath, 'r', encoding='utf-8') as f:
                 return f.read().strip()
         except Exception as e:
-            print(f"[PT] Text read error for {filepath}: {e}")
+            print(f"[ZS] Text read error for {filepath}: {e}")
             return ""
     return ""
 
@@ -162,7 +162,7 @@ def ingest_knowledge_to_chroma(knowledge_path: str = None):
         return
 
     import glob as globlib
-    from agency_config import KNOWLEDGE_DIR, DOCUMENTS_DIR
+    from agency_config import KNOWLEDGE_DIR, DOCUMENTS_DIR, CHROMA_DB_DIR
 
     if knowledge_path is None:
         knowledge_path = os.environ.get("LOCAL_KNOWLEDGE_PATH", KNOWLEDGE_DIR)
@@ -170,9 +170,21 @@ def ingest_knowledge_to_chroma(knowledge_path: str = None):
     collection = get_chroma_collection()
 
     if collection.count() > 0:
-        print(f"[PT] ChromaDB already has {collection.count()} chunks, skipping ingestion")
-        _local_docs_ingested = True
-        return
+        # Check if any knowledge file is newer than the last ingest timestamp
+        stamp_file = os.path.join(os.environ.get("CHROMA_PERSIST_DIR", CHROMA_DB_DIR), ".last_ingest")
+        last_ingest = os.path.getmtime(stamp_file) if os.path.exists(stamp_file) else 0
+        all_files = []
+        for ext in ('*.md', '*.txt', '*.pdf', '*.docx'):
+            all_files += globlib.glob(os.path.join(knowledge_path, ext))
+        newest = max((os.path.getmtime(f) for f in all_files), default=0)
+        if newest <= last_ingest:
+            print(f"[ZS] ChromaDB up to date ({collection.count()} chunks), skipping ingestion")
+            _local_docs_ingested = True
+            return
+        print(f"[ZS] Knowledge files changed — re-ingesting...")
+        collection.delete(where={"source": {"$ne": ""}})
+
+    print(f"[ZS] Starting knowledge ingestion...")
 
     model = get_embedding_model()
 
@@ -186,7 +198,7 @@ def ingest_knowledge_to_chroma(knowledge_path: str = None):
         for ext in ('*.md', '*.txt', '*.pdf', '*.docx'):
             all_files += globlib.glob(os.path.join(local_docs_path, ext))
 
-    print(f"[PT] Found {len(all_files)} files to ingest")
+    print(f"[ZS] Found {len(all_files)} files to ingest")
 
     chunk_size = 600  # slightly larger for technical docs
     chunk_overlap = 120
@@ -271,17 +283,17 @@ def ingest_knowledge_to_chroma(knowledge_path: str = None):
                     meta["page"] = chunk_pages[idx]
                 all_metadatas.append(meta)
 
-            print(f"[PT] Chunked {filename}: {len(chunks)} chunks ({len(content)} chars extracted)")
+            print(f"[ZS] Chunked {filename}: {len(chunks)} chunks ({len(content)} chars extracted)")
 
         except Exception as e:
-            print(f"[PT] Error processing {filepath}: {e}")
+            print(f"[ZS] Error processing {filepath}: {e}")
             skipped += 1
 
     if skipped:
-        print(f"[PT] Skipped {skipped} files (empty or unreadable)")
+        print(f"[ZS] Skipped {skipped} files (empty or unreadable)")
 
     if all_texts:
-        print(f"[PT] Embedding {len(all_texts)} chunks on {DEVICE} "
+        print(f"[ZS] Embedding {len(all_texts)} chunks on {DEVICE} "
               f"(batch_size={EMBEDDING_BATCH_SIZE})...")
         t0 = time.time()
         all_embeddings = model.encode(
@@ -292,7 +304,7 @@ def ingest_knowledge_to_chroma(knowledge_path: str = None):
             normalize_embeddings=True,
         ).tolist()
         embed_time = time.time() - t0
-        print(f"[PT] Embedded {len(all_texts)} chunks in {embed_time:.1f}s "
+        print(f"[ZS] Embedded {len(all_texts)} chunks in {embed_time:.1f}s "
               f"({len(all_texts)/embed_time:.0f} chunks/s)")
 
         for i in range(0, len(all_ids), INGEST_BATCH_SIZE):
@@ -305,7 +317,11 @@ def ingest_knowledge_to_chroma(knowledge_path: str = None):
             )
 
         total = len(all_ids)
-        print(f"[PT] Ingested {total} chunks into ChromaDB")
+        print(f"[ZS] Ingested {total} chunks into ChromaDB")
+        # Write timestamp so next check knows when last ingest occurred
+        stamp_file = os.path.join(os.environ.get("CHROMA_PERSIST_DIR", CHROMA_DB_DIR), ".last_ingest")
+        with open(stamp_file, 'w') as f:
+            f.write(str(time.time()))
 
     _local_docs_ingested = True
 
@@ -330,23 +346,23 @@ class HybridRetriever(BaseRetriever):
         if not self.generator:
             return [query]
 
-        prompt = """Anda pakar pencarian dokumen teknikal.
-Tulis 3 versi berbeza soalan berikut untuk carian dokumen. Gunakan istilah teknikal BM/BI.
+        prompt = """You are a document search expert.
+Write 3 different versions of the following question for document retrieval. Use relevant technical terms.
 
-Soalan asal: """ + query + """
+Original question: """ + query + """
 
-Jawab HANYA 3 baris, satu soalan setiap baris. Tiada nombor atau bullet:"""
+Reply with ONLY 3 lines, one question per line. No numbers or bullets:"""
 
         try:
             result = self.generator.generate(prompt)
             variants = [v.strip() for v in result.strip().split('\n') if v.strip()]
             all_queries = [query] + variants[:3]
-            print(f"[PT] Query expansion: {query[:60]} -> {len(all_queries)} variants")
+            print(f"[ZS] Query expansion: {query[:60]} -> {len(all_queries)} variants")
             for i, q in enumerate(all_queries):
                 print(f"  [{i}] {q[:80]}")
             return all_queries
         except Exception as e:
-            print(f"[PT] Query expansion failed: {e}")
+            print(f"[ZS] Query expansion failed: {e}")
             return [query]
 
     # Cached BM25 index — rebuilt only when collection changes
@@ -365,7 +381,7 @@ Jawab HANYA 3 baris, satu soalan setiap baris. Tiada nombor atau bullet:"""
                 tokenized = [d.lower().split() for d in all_docs['documents']]
                 cls._bm25_cache = (BM25Okapi(tokenized), all_docs)
                 cls._bm25_doc_count = current_count
-                print(f"[PT] BM25 index built: {current_count} docs (cached)")
+                print(f"[ZS] BM25 index built: {current_count} docs (cached)")
         return cls._bm25_cache
 
     def _bm25_search(self, query: str) -> Dict:
@@ -383,9 +399,9 @@ Jawab HANYA 3 baris, satu soalan setiap baris. Tiada nombor atau bullet:"""
                     if score > 0:
                         doc_id = hashlib.md5(doc[:200].encode()).hexdigest()
                         bm25_scores[doc_id] = (doc, meta, float(score))
-            print(f"[PT] BM25 found {len(bm25_scores)} keyword matches")
+            print(f"[ZS] BM25 found {len(bm25_scores)} keyword matches")
         except Exception as e:
-            print(f"[PT] BM25 search failed: {e}")
+            print(f"[ZS] BM25 search failed: {e}")
         return bm25_scores
 
     async def retrieve(self, query: str) -> Tuple[List[str], List[Dict[str, Any]]]:
@@ -472,7 +488,7 @@ Jawab HANYA 3 baris, satu soalan setiap baris. Tiada nombor atau bullet:"""
                 source_entry["page"] = page
             sources.append(source_entry)
 
-        print(f"[PT] Hybrid retrieval: {len(contexts)} results "
+        print(f"[ZS] Hybrid retrieval: {len(contexts)} results "
               f"(vector: {len(vector_results)}, BM25: {len(bm25_scores)}, "
               f"fused: {len(fused)}, queries: {len(expanded)})")
 
@@ -493,10 +509,10 @@ class CrossEncoderReranker(BaseReranker):
                 "RERANKER_MODEL",
                 "cross-encoder/ms-marco-MiniLM-L-6-v2"
             )
-            print(f"[PT] Loading cross-encoder: {model_name} -> {CROSS_ENCODER_DEVICE}")
+            print(f"[ZS] Loading cross-encoder: {model_name} -> {CROSS_ENCODER_DEVICE}")
             self._cross_encoder = CrossEncoder(model_name, device=CROSS_ENCODER_DEVICE)
             _ = self._cross_encoder.predict([("warmup query", "warmup doc")])
-            print(f"[PT] Cross-encoder ready on {CROSS_ENCODER_DEVICE}")
+            print(f"[ZS] Cross-encoder ready on {CROSS_ENCODER_DEVICE}")
         return self._cross_encoder
 
     def rerank(self, query: str, documents: List[Dict[str, Any]], top_n: int = 5) -> List[Dict[str, Any]]:
@@ -520,57 +536,41 @@ class CrossEncoderReranker(BaseReranker):
                 doc_copy["rerank_score"] = float(score)
                 result.append(doc_copy)
 
-            print(f"[PT] Cross-encoder reranking: {len(documents)} -> {len(result)} docs")
+            print(f"[ZS] Cross-encoder reranking: {len(documents)} -> {len(result)} docs")
             return result
 
         except Exception as e:
-            print(f"[PT] Cross-encoder reranking failed: {e}")
+            print(f"[ZS] Cross-encoder reranking failed: {e}")
             return documents[:top_n]
 
 
 # ============================================================================
-# LLM GENERATOR — OpenAI API (GPT-4o)
+# LLM GENERATOR — DeepSeek (OpenAI-compatible API)
 # ============================================================================
-class OpenAIGenerator(BaseGenerator):
-    """OpenAI API with round-robin key rotation and retry logic."""
+class DeepSeekGenerator(BaseGenerator):
+    """DeepSeek API generator via OpenAI-compatible endpoint."""
 
     MAX_RETRIES = 2
     TIMEOUT = 90
 
     def __init__(self, model: str = None):
-        self.base_url = os.environ.get("OPENAI_API_BASE_URL", "https://api.openai.com/v1")
-        keys_str = os.environ.get("OPENAI_API_KEYS", "")
-        self.api_keys = [k.strip() for k in keys_str.split(",") if k.strip()]
-        if not self.api_keys:
-            raise ValueError("OPENAI_API_KEYS not set — required for PT Chatbot")
-        self.model = model or os.environ.get("OPENAI_MODEL", "gpt-4o")
-        self._clients = {}
-        self._call_count = 0
-        self._lock = threading.Lock()
+        self.api_key = os.environ.get("DEEPSEEK_API_KEY", "")
+        if not self.api_key:
+            raise ValueError("DEEPSEEK_API_KEY not set — required for Zarel Sevan Chatbot")
+        self.base_url = os.environ.get("DEEPSEEK_API_BASE", "https://api.deepseek.com/v1")
+        self.model = model or os.environ.get("DEEPSEEK_MODEL", "deepseek-chat")
+        self._client = None
 
     def _get_client(self):
-        with self._lock:
-            idx = self._call_count % len(self.api_keys)
-            self._call_count += 1
-        key = self.api_keys[idx]
-        if key not in self._clients:
+        if self._client is None:
             from openai import OpenAI
-            self._clients[key] = OpenAI(
-                base_url=self.base_url, api_key=key,
-                timeout=self.TIMEOUT, max_retries=0
+            self._client = OpenAI(
+                api_key=self.api_key,
+                base_url=self.base_url,
+                timeout=self.TIMEOUT,
+                max_retries=0,
             )
-        return self._clients[key]
-
-    @staticmethod
-    def _extract_content(message) -> str:
-        content = getattr(message, 'content', None) or ""
-        if content:
-            return content
-        rc = getattr(message, 'reasoning_content', None) or ""
-        if rc:
-            return rc
-        psf = getattr(message, 'provider_specific_fields', None) or {}
-        return psf.get('reasoning_content', '') or psf.get('reasoning', '') or ""
+        return self._client
 
     def generate(self, prompt: str) -> str:
         last_err = None
@@ -581,19 +581,19 @@ class OpenAIGenerator(BaseGenerator):
                     model=self.model,
                     messages=[{"role": "user", "content": prompt}],
                     max_tokens=4000,
-                    temperature=0.2
+                    temperature=0.2,
                 )
-                result = self._extract_content(response.choices[0].message)
+                result = response.choices[0].message.content or ""
                 if result:
                     return result
-                print(f"[OpenAI] Warning: empty response on attempt {attempt+1}")
+                print(f"[DeepSeek] Warning: empty response on attempt {attempt+1}")
             except Exception as e:
                 last_err = e
-                print(f"[OpenAI] Error attempt {attempt+1}/{self.MAX_RETRIES+1}: {e}")
+                print(f"[DeepSeek] Error attempt {attempt+1}/{self.MAX_RETRIES+1}: {e}")
                 if attempt < self.MAX_RETRIES:
                     time.sleep(1)
-        print(f"[OpenAI] All retries failed: {last_err}")
-        return "Maaf, sistem sedang sibuk. Sila cuba semula."
+        print(f"[DeepSeek] All retries failed: {last_err}")
+        return "Sorry, the system is currently busy. Please try again."
 
     def generate_stream(self, prompt: str) -> Generator[str, None, None]:
         try:
@@ -603,21 +603,19 @@ class OpenAIGenerator(BaseGenerator):
                 messages=[{"role": "user", "content": prompt}],
                 max_tokens=4000,
                 temperature=0.2,
-                stream=True
+                stream=True,
             )
             got_content = False
             for chunk in stream:
-                if chunk.choices and chunk.choices[0].delta:
-                    text = chunk.choices[0].delta.content
-                    if text:
-                        got_content = True
-                        yield text
+                if chunk.choices and chunk.choices[0].delta.content:
+                    got_content = True
+                    yield chunk.choices[0].delta.content
             if not got_content:
-                print(f"[OpenAI] Stream produced no content, falling back to non-stream")
+                print(f"[DeepSeek] Stream produced no content, falling back to non-stream")
                 yield self.generate(prompt)
         except Exception as e:
-            print(f"[OpenAI] Stream error: {e}")
-            yield "Maaf, ralat telah berlaku. Sila cuba semula."
+            print(f"[DeepSeek] Stream error: {e}")
+            yield "Sorry, an error occurred. Please try again."
 
 
 # ============================================================================
@@ -626,7 +624,7 @@ class OpenAIGenerator(BaseGenerator):
 class ConversationMemory:
     """SQLite-backed conversation memory for multi-turn context."""
 
-    def __init__(self, db_path: str = "/opt/pt-chatbot/logs/memory.db"):
+    def __init__(self, db_path: str = "/app/logs/memory.db"):
         self.db_path = db_path
         self._init_db()
 
@@ -709,28 +707,28 @@ Jawab HANYA dalam format JSON:
                 if "purata" not in eval_data:
                     scores = [eval_data.get("relevan", 3), eval_data.get("tepat", 3), eval_data.get("lengkap", 3)]
                     eval_data["purata"] = round(sum(scores) / len(scores), 1)
-                print(f"[PT] Self-eval: {eval_data.get('purata', '?')}/5 — {eval_data.get('nota', '')}")
+                print(f"[ZS] Self-eval: {eval_data.get('purata', '?')}/5 — {eval_data.get('nota', '')}")
                 return eval_data
         except Exception as e:
-            print(f"[PT] Self-evaluation failed: {e}")
+            print(f"[ZS] Self-evaluation failed: {e}")
 
         return {"relevan": 3, "tepat": 3, "lengkap": 3, "purata": 3.0, "nota": "Penilaian automatik gagal"}
 
     def suggest_followups(self, query: str, answer: str) -> List[str]:
         """Generate follow-up question suggestions."""
-        prompt = f"""Berdasarkan perbualan ini, cadangkan 3 soalan susulan yang berguna.
+        prompt = f"""Based on this conversation, suggest 3 useful follow-up questions in English.
 
-Soalan pengguna: {query}
-Jawapan ringkas: {answer[:500]}
+User question: {query}
+Answer summary: {answer[:500]}
 
-Tulis 3 soalan susulan dalam Bahasa Melayu. Satu soalan setiap baris. Tiada nombor:"""
+Write 3 follow-up questions in English. One question per line. No numbers:"""
 
         try:
             result = self.generator.generate(prompt)
             suggestions = [s.strip() for s in result.strip().split('\n') if s.strip() and len(s.strip()) > 10]
             return suggestions[:3]
         except Exception as e:
-            print(f"[PT] Follow-up suggestion failed: {e}")
+            print(f"[ZS] Follow-up suggestion failed: {e}")
             return []
 
 
@@ -749,9 +747,9 @@ def _get_tavily_client():
                 try:
                     from tavily import TavilyClient
                     _tavily_client = TavilyClient(api_key=key)
-                    print("[PT] Tavily web search client initialised")
+                    print("[ZS] Tavily web search client initialised")
                 except ImportError:
-                    print("[PT] tavily-python not installed, Tavily search disabled")
+                    print("[ZS] tavily-python not installed, Tavily search disabled")
     return _tavily_client
 
 from agency_config import WEB_SEARCH_PREFIX
@@ -764,7 +762,7 @@ def search_web_tavily(query: str) -> Tuple[List[str], List[Dict[str, Any]]]:
             return [], []
 
         q_lower = query.lower()
-        if not any(kw in q_lower for kw in ("pendakwah", "teknologi", "training", "digital")):
+        if not any(kw in q_lower for kw in ("zarel", "sevan", "produk", "tiktok")):
             search_query = f"{WEB_SEARCH_PREFIX} {query}"
         else:
             search_query = query
@@ -792,10 +790,10 @@ def search_web_tavily(query: str) -> Tuple[List[str], List[Dict[str, Any]]]:
                     "source_uri": url,
                     "priority": "SUPPLEMENTARY",
                 })
-        print(f"[PT] Tavily search: {len(contexts)} results for: {search_query[:80]}")
+        print(f"[ZS] Tavily search: {len(contexts)} results for: {search_query[:80]}")
         return contexts, sources
     except Exception as e:
-        print(f"[PT] Tavily search error: {e}")
+        print(f"[ZS] Tavily search error: {e}")
         return [], []
 
 
@@ -808,7 +806,7 @@ def search_web_brave(query: str) -> Tuple[List[str], List[Dict[str, Any]]]:
         import httpx
 
         q_lower = query.lower()
-        if not any(kw in q_lower for kw in ("pendakwah", "teknologi", "training", "digital")):
+        if not any(kw in q_lower for kw in ("zarel", "sevan", "produk", "tiktok")):
             search_query = f"{WEB_SEARCH_PREFIX} {query}"
         else:
             search_query = query
@@ -837,10 +835,10 @@ def search_web_brave(query: str) -> Tuple[List[str], List[Dict[str, Any]]]:
                     "source_uri": url,
                     "priority": "SUPPLEMENTARY",
                 })
-        print(f"[PT] Brave search: {len(contexts)} results for: {search_query[:80]}")
+        print(f"[ZS] Brave search: {len(contexts)} results for: {search_query[:80]}")
         return contexts, sources
     except Exception as e:
-        print(f"[PT] Brave search error: {e}")
+        print(f"[ZS] Brave search error: {e}")
         return [], []
 
 
@@ -868,29 +866,26 @@ def get_providers() -> Dict[str, Any]:
     global _providers
     if _providers is None:
         print(f"\n{'='*60}")
-        print(f"  INITIALISING PT CHATBOT PROVIDERS")
+        print(f"  INITIALISING ZAREL SEVAN CHATBOT PROVIDERS")
         print(f"{'='*60}\n")
 
-        # Main answer: GPT-4o (best quality)
-        model_main = os.environ.get("OPENAI_MODEL", "gpt-4o")
-        generator = OpenAIGenerator(model=model_main)
+        # Single Claude model for all tasks
+        model_main = os.environ.get("DEEPSEEK_MODEL", "deepseek-chat")
+        generator = DeepSeekGenerator(model=model_main)
+        generator_fast = generator  # reuse same model for utilities
 
-        # Utility tasks (expansion, eval, followups): GPT-4o-mini (faster)
-        model_fast = os.environ.get("OPENAI_MODEL_FAST", "gpt-4o-mini")
-        generator_fast = OpenAIGenerator(model=model_fast)
-
-        enhancer = UltraEnhancer(generator_fast)  # fast model for eval/followups
+        enhancer = UltraEnhancer(generator_fast)
 
         _providers = {
             "mode": "ultra",
-            "retriever": HybridRetriever(generator=generator_fast),  # fast model for query expansion
+            "retriever": HybridRetriever(generator=generator_fast),
             "reranker": CrossEncoderReranker(),
-            "generator": generator,        # 122B for main answer
-            "generator_fast": generator_fast,  # 27B for utilities
+            "generator": generator,
+            "generator_fast": generator_fast,
             "enhancer": enhancer,
             "memory": enhancer.memory,
             "web_search": search_web,
-            "description": f"PT Chatbot ({model_main} answer + {model_fast} utilities + web search)"
+            "description": f"Zarel Sevan Chatbot ({model_main} + web search)"
         }
 
         web_providers = []
@@ -900,35 +895,32 @@ def get_providers() -> Dict[str, Any]:
             web_providers.append("Brave")
         web_str = " + ".join(web_providers) if web_providers else "disabled"
 
-        print(f"[PT] Main LLM: {model_main}")
-        print(f"[PT] Fast LLM: {model_fast} (expansion/eval/followups)")
-        print(f"[PT] Web search: {web_str}")
-        print(f"[PT] Providers initialised: {_providers['description']}")
+        print(f"[ZS] LLM: {model_main}")
+        print(f"[ZS] Web search: {web_str}")
+        print(f"[ZS] Providers initialised: {_providers['description']}")
 
     return _providers
 
 
 def get_mode_info() -> Dict[str, Any]:
     providers = get_providers()
-    model = os.environ.get("OPENAI_MODEL", "gpt-4o")
+    model = os.environ.get("DEEPSEEK_MODEL", "deepseek-chat")
     return {
         "current_mode": "ultra",
         "description": providers["description"],
         "features": [
             "Query Expansion (3 LLM variants)",
             "Hybrid Search (Vector + BM25 + RRF)",
-            "Cross-Encoder Reranking (GPU)",
+            "Cross-Encoder Reranking (CPU)",
             "Self-Evaluation (3-dimension scoring)",
             "Follow-up Suggestions",
             "Conversation Memory (SQLite)",
             "Chain-of-Thought Prompting",
-            "Voice STT (Whisper large-v3, GPU)",
-            "Voice TTS (MMS-TTS Malay, GPU)",
             "Web Search (Tavily + Brave)",
         ],
-        "llm": f"OpenAI ({model})",
-        "embeddings": "mesolitica/mistral-embedding-191m-8k-contrastive (Malay)",
-        "reranker": "cross-encoder/ms-marco-MiniLM-L-6-v2 (GPU)",
+        "llm": f"DeepSeek ({model})",
+        "embeddings": "mesolitica/mistral-embedding-191m-8k-contrastive (Malay, CPU)",
+        "reranker": "cross-encoder/ms-marco-MiniLM-L-6-v2 (CPU)",
         "vector_db": "ChromaDB (hybrid: vector + BM25 + query expansion)",
         "device": DEVICE,
     }

@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="ms">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PT Chatbot — Arkitektur Sistem</title>
+    <title>Zarel Sevan — System Architecture</title>
+    <link rel="icon" type="image/png" href="/static/zs-logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
@@ -181,28 +182,28 @@
 <div class="page">
 
     <div class="page-header">
-        <img src="pt.jpg" alt="PT Logo">
-        <h1>ARKITEKTUR SISTEM</h1>
-        <a href="./" class="back-link">Kembali ke Chat</a>
+        <img src="/static/zs-logo.png" alt="Zarel Sevan Logo" style="border-radius:10px;">
+        <h1>SYSTEM ARCHITECTURE</h1>
+        <a href="./" class="back-link">Back to Chat</a>
     </div>
 
     <!-- OVERVIEW -->
     <div class="section">
-        <h2>GAMBARAN KESELURUHAN</h2>
-        <p>PT Chatbot ialah sistem chatbot AI yang direka khusus untuk Pendakwah Teknologi Solutions — sebuah syarikat transformasi digital dan latihan. Sistem ini menggunakan pendekatan RAG (Retrieval-Augmented Generation) dengan pencarian hibrid, pengembangan pertanyaan automatik, dan penilaian kendiri untuk memastikan jawapan berkualiti tinggi.</p>
+        <h2>OVERVIEW</h2>
+        <p>Zarel Sevan AI Chatbot is a RAG (Retrieval-Augmented Generation) system for Zarel Sevan TikTok Shop Malaysia. It uses hybrid search, automatic query expansion, and self-evaluation to deliver accurate answers about products, orders, shipping, and customer support.</p>
 
         <div class="stats" id="stats">
-            <div class="stat"><div class="stat-value" id="stat-chunks">-</div><div class="stat-label">Chunks Diindeks</div></div>
-            <div class="stat"><div class="stat-value">GPT-4o</div><div class="stat-label">Model LLM</div></div>
-            <div class="stat"><div class="stat-value">10</div><div class="stat-label">Ciri AI</div></div>
-            <div class="stat"><div class="stat-value">GPU</div><div class="stat-label">NVIDIA GB10</div></div>
+            <div class="stat"><div class="stat-value" id="stat-chunks">-</div><div class="stat-label">Chunks Indexed</div></div>
+            <div class="stat"><div class="stat-value">DeepSeek</div><div class="stat-label">Model LLM</div></div>
+            <div class="stat"><div class="stat-value">10</div><div class="stat-label">AI Features</div></div>
+            <div class="stat"><div class="stat-value">CPU</div><div class="stat-label">Lenovo G40</div></div>
         </div>
     </div>
 
     <!-- PIPELINE -->
     <div class="section">
-        <h2>ALIRAN PEMPROSESAN (PIPELINE)</h2>
-        <p>Setiap soalan pengguna melalui 8 langkah pemprosesan sebelum jawapan dihasilkan:</p>
+        <h2>PROCESSING PIPELINE</h2>
+        <p>Every user question goes through 8 processing stages before an answer is generated:</p>
 
         <div class="flow">
             <div class="flow-step" data-step="1">
@@ -266,7 +267,7 @@
 
     <!-- COMPONENTS -->
     <div class="section">
-        <h2>KOMPONEN UTAMA</h2>
+        <h2>KEY COMPONENTS</h2>
 
         <h3>Model AI</h3>
         <div class="card-grid">
@@ -331,16 +332,16 @@
 
     <!-- KNOWLEDGE BASE -->
     <div class="section">
-        <h2>PANGKALAN PENGETAHUAN</h2>
+        <h2>KNOWLEDGE BASE</h2>
 
         <table class="spec-table">
             <thead>
                 <tr><th>Perkara</th><th>Butiran</th></tr>
             </thead>
             <tbody>
-                <tr><td>Dokumen</td><td>Pangkalan pengetahuan Pendakwah Teknologi Solutions</td></tr>
+                <tr><td>Dokumen</td><td>Zarel Sevan product catalogue, FAQ, policies</td></tr>
                 <tr><td>Format</td><td>PDF, DOCX, TXT, MD</td></tr>
-                <tr><td>Chunks</td><td id="kb-chunks">- chunks (600 aksara setiap chunk, 120 aksara overlap)</td></tr>
+                <tr><td>Chunks</td><td id="kb-chunks">- chunks (600 chars per chunk, 120 chars overlap)</td></tr>
                 <tr><td>Metadata</td><td>Nama fail, indeks chunk, nombor halaman, jenis dokumen</td></tr>
                 <tr><td>Pangkalan Vektor</td><td>ChromaDB dengan HNSW (M=32, construction_ef=200, search_ef=100)</td></tr>
                 <tr><td>Dimensi Vektor</td><td>1024 (Mesolitica Mistral 191M)</td></tr>
@@ -348,12 +349,12 @@
         </table>
 
         <h3>Liputan Dokumen</h3>
-        <p>Pangkalan pengetahuan boleh diisi dengan sebarang dokumen berkaitan perkhidmatan, produk, dan operasi Pendakwah Teknologi. Dokumen akan dipecahkan kepada chunks dan diindeks secara automatik.</p>
+        <p>Drop any .md, .txt, .pdf, or .docx file into /home/syazniafham/zarelsevan-chatbot/knowledge/, then restart the container. Documents are chunked and indexed automatically on first request.</p>
     </div>
 
     <!-- INFRASTRUCTURE -->
     <div class="section">
-        <h2>INFRASTRUKTUR</h2>
+        <h2>INFRASTRUCTURE</h2>
 
         <h3>Perkakasan</h3>
         <div class="card-grid">
@@ -388,7 +389,7 @@
 
     <!-- SECURITY -->
     <div class="section">
-        <h2>KESELAMATAN & KUALITI</h2>
+        <h2>SECURITY &amp; QUALITY</h2>
 
         <div class="card-grid">
             <div class="card">
@@ -416,19 +417,19 @@
 
     <!-- FOOTER -->
     <div style="text-align:center; padding-top:2rem; border-top:1px solid var(--glass-border);">
-        <div style="font-size:0.7rem; color:var(--text-dim);">PT Chatbot &mdash; Pendakwah Teknologi AI Assistant</div>
-        <div style="font-size:0.65rem; color:var(--text-dim); margin-top:0.3rem;">Inovasi oleh Pendakwah Teknologi</div>
+        <div style="font-size:0.7rem; color:var(--text-dim);">Zarel Sevan AI Chatbot &mdash; TikTok Shop Malaysia</div>
+        <div style="font-size:0.65rem; color:var(--text-dim); margin-top:0.3rem;">Powered by DeepSeek &middot; Mesolitica &middot; ChromaDB</div>
     </div>
 
 </div>
 
 <script>
 // Fetch live stats
-fetch('api/health').then(function(r){ return r.json(); }).then(function(d){
+fetch('/api/health').then(function(r){ return r.json(); }).then(function(d){
     var el = document.getElementById('stat-chunks');
     if (el && d.documents_indexed) el.textContent = d.documents_indexed;
     var kb = document.getElementById('kb-chunks');
-    if (kb && d.documents_indexed) kb.textContent = d.documents_indexed + ' chunks (600 aksara setiap chunk, 120 aksara overlap)';
+    if (kb && d.documents_indexed) kb.textContent = d.documents_indexed + ' chunks (600 chars per chunk, 120 chars overlap)';
 }).catch(function(){});
 </script>
 

@@ -1,13 +1,14 @@
 """
-PT Chatbot — Pendakwah Teknologi AI Assistant
+Zarel Sevan Chatbot — AI Assistant
 FastAPI backend: Query Expansion + Hybrid Search + Cross-Encoder +
-Self-Eval + Follow-ups + Conversation Memory + Voice (STT/TTS) +
-OpenAI GPT-4o + Mesolitica Embeddings
+Self-Eval + Follow-ups + Conversation Memory +
+Claude (Anthropic) + Mesolitica Embeddings (CPU)
 """
 
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import StreamingResponse, Response
+from fastapi.responses import StreamingResponse, Response, FileResponse
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from typing import List, Optional, Dict, Any
 import os
@@ -24,7 +25,7 @@ import logging
 from datetime import datetime
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s] %(message)s')
-logger = logging.getLogger("pt-chatbot")
+logger = logging.getLogger("zs-chatbot")
 
 from agency_config import (
     AGENCY_ID, AGENCY_NAME, AGENCY_ACRONYM,
@@ -54,17 +55,24 @@ def _get_redis():
     global _redis_client
     if _redis_client is None:
         try:
-            _redis_client = _redis.Redis(
-                host=os.environ.get("REDIS_HOST", "localhost"),
-                port=int(os.environ.get("REDIS_PORT", "6379")),
-                db=int(os.environ.get("REDIS_DB", "2")),  # separate DB from other services
-                decode_responses=True,
-                socket_connect_timeout=2,
-            )
+            redis_url = os.environ.get("REDIS_URL", "")
+            if redis_url:
+                _redis_client = _redis.from_url(
+                    redis_url, db=int(os.environ.get("REDIS_DB", "2")),
+                    decode_responses=True, socket_connect_timeout=2,
+                )
+            else:
+                _redis_client = _redis.Redis(
+                    host=os.environ.get("REDIS_HOST", "localhost"),
+                    port=int(os.environ.get("REDIS_PORT", "6379")),
+                    db=int(os.environ.get("REDIS_DB", "2")),
+                    decode_responses=True,
+                    socket_connect_timeout=2,
+                )
             _redis_client.ping()
-            print("[PT] Redis connected for caching")
+            print("[ZS] Redis connected for caching")
         except Exception as e:
-            print(f"[PT] Redis unavailable ({e}), falling back to in-memory")
+            print(f"[ZS] Redis unavailable ({e}), falling back to in-memory")
             _redis_client = None
     return _redis_client
 
@@ -72,7 +80,7 @@ def _get_redis():
 class ResponseCache:
     """Redis-backed cache with in-memory fallback. Shared across all workers."""
 
-    def __init__(self, ttl: int = 600, prefix: str = "pt:cache:"):
+    def __init__(self, ttl: int = 600, prefix: str = "zs:cache:"):
         self._ttl = ttl
         self._prefix = prefix
         # In-memory fallback
@@ -184,8 +192,8 @@ def classify_query(query: str) -> str:
             return "internal"
 
     external_patterns = [
-        r"(terkini|berita|rencana|kemaskini).*(pendakwah|teknologi|latihan|training)",
-        r"(pendakwah|teknologi).*(terkini|berita|kemaskini|semasa)",
+        r"(terkini|berita|rencana|kemaskini).*(zarel|produk|tiktok)",
+        r"(zarel|tiktok).*(terkini|berita|kemaskini|semasa)",
         r"apa.*(berlaku|terjadi).*(terkini|semasa)",
     ]
     for pattern in external_patterns:
@@ -330,7 +338,7 @@ def log_conversation(query: str, reply: str, query_type: str,
                 cache_hit,
             ])
     except Exception as e:
-        print(f"[PT] CSV log error: {e}")
+        print(f"[ZS] CSV log error: {e}")
 
 
 # ============================================================================
@@ -341,7 +349,7 @@ async def handle_chat(messages_payload: List[Dict[str, str]], latest_message: st
     start_time = time.time()
 
     query_type = classify_query(latest_message)
-    print(f"[PT] Query classified as: {query_type}")
+    print(f"[ZS] Query classified as: {query_type}")
 
     # Step 1: Retrieve (hybrid: vector + BM25 + query expansion)
     retriever = providers["retriever"]
@@ -350,7 +358,7 @@ async def handle_chat(messages_payload: List[Dict[str, str]], latest_message: st
     # Step 1b: Web search for external/hybrid queries
     web_contexts, web_sources = [], []
     if query_type in ("external", "hybrid"):
-        print(f"[PT] Query is {query_type}, searching web...")
+        print(f"[ZS] Query is {query_type}, searching web...")
         web_search_fn = providers.get("web_search")
         if web_search_fn:
             web_contexts, web_sources = await asyncio.to_thread(web_search_fn, latest_message)
@@ -364,7 +372,7 @@ async def handle_chat(messages_payload: List[Dict[str, str]], latest_message: st
             for s in sources
         ]
 
-    # Step 3: Generate with OpenAI (enhanced CoT prompt)
+    # Step 3: Generate with Claude (enhanced CoT prompt)
     generator = providers["generator"]
     num_variants = len(getattr(retriever, '_last_expanded', [latest_message]))
     prompt = build_prompt(latest_message, contexts, messages_payload, query_type, num_variants, web_contexts)
@@ -454,11 +462,11 @@ def get_whisper_model():
         from faster_whisper import WhisperModel
         model_size = os.environ.get("WHISPER_MODEL", "large-v3")
         device = os.environ.get("WHISPER_DEVICE", "cuda")
-        print(f"[PT] Loading Whisper {model_size} on {device}...")
+        print(f"[ZS] Loading Whisper {model_size} on {device}...")
         _whisper_model = WhisperModel(
             model_size, device=device, compute_type="float16"
         )
-        print(f"[PT] Whisper ready on {device}")
+        print(f"[ZS] Whisper ready on {device}")
     return _whisper_model
 
 
@@ -470,10 +478,10 @@ def get_tts_model():
         from transformers import VitsModel, AutoTokenizer
         model_name = os.environ.get("TTS_LOCAL_MODEL", "facebook/mms-tts-zlm")
         device = os.environ.get("TTS_LOCAL_DEVICE", "cuda")
-        print(f"[PT] Loading TTS {model_name} on {device}...")
+        print(f"[ZS] Loading TTS {model_name} on {device}...")
         _tts_tokenizer = AutoTokenizer.from_pretrained(model_name)
         _tts_model = VitsModel.from_pretrained(model_name).to(device)
-        print(f"[PT] TTS ready on {device}")
+        print(f"[ZS] TTS ready on {device}")
     return _tts_model, _tts_tokenizer
 
 
@@ -489,7 +497,7 @@ def transcribe_audio_local(audio_bytes: bytes) -> str:
             vad_filter=True, vad_parameters=dict(min_silence_duration_ms=500)
         )
         text = " ".join(seg.text.strip() for seg in segments)
-    print(f"[PT] Whisper transcribed: {text[:100]}...")
+    print(f"[ZS] Whisper transcribed: {text[:100]}...")
     return text
 
 
@@ -526,7 +534,7 @@ def synthesize_speech_local(text: str) -> bytes:
     pcm = (waveform * 32767).clip(-32768, 32767).astype(np.int16)
     buf.write(pcm.tobytes())
 
-    print(f"[PT] TTS synthesized: {len(text)} chars -> {data_size} bytes @ {sample_rate}Hz")
+    print(f"[ZS] TTS synthesized: {len(text)} chars -> {data_size} bytes @ {sample_rate}Hz")
     return buf.getvalue()
 
 
@@ -534,8 +542,8 @@ def synthesize_speech_local(text: str) -> bytes:
 # FASTAPI APP
 # ============================================================================
 app = FastAPI(
-    title="PT Chatbot — Pendakwah Teknologi AI Assistant",
-    version="2.0.0"
+    title="Zarel Sevan Chatbot — AI Assistant",
+    version="1.0.0"
 )
 
 app.add_middleware(
@@ -545,6 +553,19 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Serve frontend static files
+_frontend_dir = os.path.join(os.path.dirname(__file__), "frontend")
+if os.path.isdir(_frontend_dir):
+    app.mount("/static", StaticFiles(directory=_frontend_dir), name="static")
+
+    @app.get("/")
+    async def serve_index():
+        return FileResponse(os.path.join(_frontend_dir, "index.html"))
+
+    @app.get("/admin")
+    async def serve_admin():
+        return FileResponse(os.path.join(_frontend_dir, "admin.html"))
 
 
 # ============================================================================
@@ -635,7 +656,7 @@ async def chat(req: ChatRequest, request: Request):
             followup_suggestions=result.get("followup_suggestions"),
         )
     except Exception as exc:
-        print(f"[PT] ERROR: {exc}")
+        print(f"[ZS] ERROR: {exc}")
         import traceback
         traceback.print_exc()
         raise HTTPException(status_code=502, detail=f"Ralat sistem: {str(exc)}")
@@ -698,7 +719,7 @@ async def chat_stream(req: ChatRequest, request: Request):
                 if item is _sentinel:
                     break
                 if isinstance(item, Exception):
-                    print(f"[PT] Stream gen error: {item}")
+                    print(f"[ZS] Stream gen error: {item}")
                     break
                 full_reply.append(item)
                 chunk_event = {"type": "chunk", "data": item}
@@ -720,7 +741,7 @@ async def chat_stream(req: ChatRequest, request: Request):
                     extras["self_evaluation"] = eval_data
                     extras["followup_suggestions"] = followups
                 except Exception as e:
-                    print(f"[PT] Stream extras error: {e}")
+                    print(f"[ZS] Stream extras error: {e}")
 
             # Done event with extras
             # Log the conversation
@@ -748,7 +769,7 @@ async def chat_stream(req: ChatRequest, request: Request):
             }
         )
     except Exception as exc:
-        print(f"[PT] Stream ERROR: {exc}")
+        print(f"[ZS] Stream ERROR: {exc}")
         import traceback
         traceback.print_exc()
         raise HTTPException(status_code=502, detail=f"Ralat sistem: {str(exc)}")
@@ -765,14 +786,14 @@ async def health():
 
     return {
         "status": "ok",
-        "service": "pt-chatbot",
-        "version": "2.0.0",
+        "service": "zs-chatbot",
+        "version": "1.0.0",
         "timestamp": datetime.now().isoformat(),
         "documents_indexed": doc_count,
         "device": DEVICE,
         "features": ["query_expansion", "hybrid_search", "cross_encoder",
                       "self_evaluation", "followup_suggestions",
-                      "conversation_memory", "voice_stt", "voice_tts"],
+                      "conversation_memory"],
     }
 
 
@@ -948,7 +969,7 @@ async def voice_transcribe(req: TranscribeRequest):
     except HTTPException:
         raise
     except Exception as e:
-        print(f"[PT] Transcribe error: {e}")
+        print(f"[ZS] Transcribe error: {e}")
         raise HTTPException(status_code=500, detail=f"Ralat transkripsi: {str(e)}")
 
 
@@ -969,15 +990,14 @@ async def voice_synthesize(req: SynthesizeRequest):
     except HTTPException:
         raise
     except Exception as e:
-        print(f"[PT] TTS error: {e}")
+        print(f"[ZS] TTS error: {e}")
         raise HTTPException(status_code=500, detail=f"Ralat TTS: {str(e)}")
 
 
 # Startup: pre-warm models
 @app.on_event("startup")
 async def startup():
-    print(f"[PT Chatbot] Starting on port {PORT}...")
-    print(f"[PT Chatbot] CUDA: {DEVICE}")
-    print(f"[PT Chatbot] Features: Query Expansion, Hybrid Search, Cross-Encoder, "
-          f"Self-Eval, Follow-ups, Memory, Voice STT/TTS")
+    print(f"[ZS Chatbot] Starting on port {PORT}...")
+    print(f"[ZS Chatbot] Device: {DEVICE}")
+    print(f"[ZS Chatbot] Features: Query Expansion, Hybrid Search, Cross-Encoder, Self-Eval, Follow-ups, Memory")
     asyncio.create_task(asyncio.to_thread(get_providers))

@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="ms">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PT Chatbot — Pendakwah Teknologi AI Assistant</title>
+    <title>Zarel Sevan AI Assistant</title>
+    <link rel="icon" type="image/png" href="/static/zs-logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
@@ -920,6 +921,48 @@
             font-style: italic;
         }
 
+        /* Product card */
+        .product-card-row {
+            display: flex; flex-wrap: wrap; gap: 0.6rem;
+            margin-top: 0.75rem;
+        }
+        .product-card {
+            display: flex; align-items: center; gap: 0.75rem;
+            background: rgba(212,160,23,0.06);
+            border: 1px solid rgba(212,160,23,0.18);
+            border-radius: 10px;
+            padding: 0.6rem 0.75rem;
+            min-width: 200px; max-width: 280px;
+        }
+        .product-card img {
+            width: 54px; height: 54px;
+            object-fit: cover; border-radius: 6px;
+            flex-shrink: 0;
+        }
+        .product-card-info { flex: 1; min-width: 0; }
+        .product-card-name {
+            font-size: 0.72rem; font-weight: 600;
+            color: var(--amber-light);
+            margin-bottom: 0.15rem;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .product-card-price {
+            font-family: var(--font-mono);
+            font-size: 0.65rem; color: var(--text-secondary);
+            margin-bottom: 0.35rem;
+        }
+        .product-card-buy {
+            display: inline-block;
+            font-size: 0.6rem; font-weight: 600;
+            padding: 0.25rem 0.6rem;
+            background: var(--amber);
+            color: #000;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+        .product-card-buy:hover { opacity: 0.85; }
+
         /* Follow-up chips */
         .followup-section {
             margin-top: 0.5rem;
@@ -1068,46 +1111,46 @@
 
             <!-- LEFT PANEL -->
             <div class="panel-left">
-                <div class="corner-tag">Pendakwah Teknologi AI</div>
+                <div class="corner-tag">Zarel Sevan AI</div>
 
-                <img src="pt.jpg" alt="PT Logo" style="width:72px; height:auto; margin-bottom:0.6rem; filter: drop-shadow(0 2px 8px rgba(212,160,23,0.25));">
-                <div class="panel-title">PT CHATBOT</div>
-                <div class="panel-subtitle">Pembantu AI Rasmi<br>Pendakwah Teknologi Solutions</div>
+                <img src="/static/zs-logo.png" alt="Zarel Sevan Logo" style="width:72px; height:auto; margin-bottom:0.6rem; border-radius:12px; filter: drop-shadow(0 2px 8px rgba(212,160,23,0.25));">
+                <div class="panel-title">ZAREL SEVAN</div>
+                <div class="panel-subtitle">Official AI Assistant<br>TikTok Shop Malaysia</div>
 
                 <div class="spec-cards">
                     <div class="spec-card">
                         <div class="spec-icon">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>
+                                <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/>
                             </svg>
                         </div>
                         <div>
-                            <div class="spec-label">Latihan AI &amp; Keselamatan Siber</div>
-                            <div class="spec-desc">Kursus dan bengkel AI, keselamatan siber, rangkaian, 5G dan Wi-Fi.</div>
+                            <div class="spec-label">Products &amp; Catalogue</div>
+                            <div class="spec-desc">Browse our full product range available on TikTok Shop Malaysia.</div>
                         </div>
                     </div>
 
                     <div class="spec-card">
                         <div class="spec-icon">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                                <rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
                             </svg>
                         </div>
                         <div>
-                            <div class="spec-label">Pengeluaran Video &amp; Kandungan</div>
-                            <div class="spec-desc">Penciptaan kandungan kreatif, pengeluaran video dan perkhidmatan media digital.</div>
+                            <div class="spec-label">Shipping &amp; Delivery</div>
+                            <div class="spec-desc">Nationwide delivery to Peninsular, Sabah &amp; Sarawak via J&amp;T / Pos Laju.</div>
                         </div>
                     </div>
 
                     <div class="spec-card">
                         <div class="spec-icon">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
                             </svg>
                         </div>
                         <div>
-                            <div class="spec-label">Transformasi Digital</div>
-                            <div class="spec-desc">Perundingan strategi digital, endorsement jenama dan pengehosan acara.</div>
+                            <div class="spec-label">Returns &amp; Support</div>
+                            <div class="spec-desc">7-day return policy. Friendly customer support Mon–Sun 9 AM–10 PM.</div>
                         </div>
                     </div>
                 </div>
@@ -1119,26 +1162,30 @@
                         </svg>
                     </div>
                     <div class="disclaimer-text">
-                        <strong>Pembantu AI.</strong> Jawapan berdasarkan pangkalan pengetahuan Pendakwah Teknologi.
-                        Untuk pertanyaan lanjut, hubungi contact@pendakwah.tech.
+                        <strong>AI Assistant.</strong> Answers based on Zarel Sevan's knowledge base.
+                        For further enquiries, contact <a href="mailto:admin@zarelsevan.my" style="color:var(--amber-light);">admin@zarelsevan.my</a>.
                     </div>
                 </div>
 
-                <a href="architecture.html" class="org-link" style="margin-bottom:0.5rem;">
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 9V7h-2V5a2 2 0 00-2-2H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-2h2v-2h-2v-2h2v-2h-2V9h2zM18 19H4V5h14v14zM6 13h5v4H6v-4zm6-6h4v3h-4V7zM6 7h5v5H6V7zm6 4h4v6h-4v-6z"/></svg>
-                    Arkitektur Sistem
+                <a href="https://www.tiktok.com/@zarelsevan" target="_blank" rel="noopener noreferrer" class="org-link" style="margin-bottom:0.5rem;">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.79 1.53V6.76a4.85 4.85 0 01-1.02-.07z"/></svg>
+                    TikTok Shop
                 </a>
-                <a href="admin.html" class="org-link" style="margin-bottom:0.5rem;">
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z"/></svg>
-                    Log & Audit
+                <a href="https://www.instagram.com/zarelsevan" target="_blank" rel="noopener noreferrer" class="org-link" style="margin-bottom:0.5rem;">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                    Instagram
                 </a>
-                <a href="https://github.com/pendakwahteknologi/pt-chatbot" target="_blank" rel="noopener noreferrer" class="org-link" style="margin-bottom:0.75rem;">
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.866-.013-1.7-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836a9.59 9.59 0 012.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
-                    GitHub
+                <a href="https://www.facebook.com/zarelsevan" target="_blank" rel="noopener noreferrer" class="org-link" style="margin-bottom:0.5rem;">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                    Facebook
+                </a>
+                <a href="https://zarelsevan.my" target="_blank" rel="noopener noreferrer" class="org-link" style="margin-bottom:0.75rem;">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                    zarelsevan.my
                 </a>
 
                 <div class="org-footer">
-                    <div class="org-label">Dihasilkan oleh <a href="https://pendakwah.tech" target="_blank" rel="noopener noreferrer" style="color:var(--amber-light); text-decoration:none; font-weight:600;">Pendakwah Teknologi</a></div>
+                    <div class="org-label">Powered by <a href="https://zarelsevan.my" target="_blank" rel="noopener noreferrer" style="color:var(--amber-light); text-decoration:none; font-weight:600;">Zarel Sevan</a></div>
                 </div>
             </div>
 
@@ -1146,49 +1193,49 @@
             <div class="panel-right">
                 <div class="chat-chrome">
                     <div class="chat-head">
-                        <img src="pt.jpg" alt="PT" style="width:38px; height:auto; border-radius:8px;">
+                        <img src="/static/zs-logo.png" alt="Zarel Sevan" style="width:38px; height:auto; border-radius:8px;">
                         <div class="chat-head-info">
-                            <div class="chat-head-status">Aktif</div>
+                            <div class="chat-head-status">Online</div>
                         </div>
                         <div class="chat-head-actions">
-                            <button class="btn-clear" id="clearBtn">Padam</button>
+                            <button class="btn-clear" id="clearBtn">Clear</button>
                         </div>
                     </div>
 
                     <div class="chat-body" id="chatBody">
                         <div class="welcome-block" id="welcome">
-                            <img src="pt.jpg" alt="PT" style="width:56px; height:auto; margin-bottom:1.25rem; filter: drop-shadow(0 2px 12px rgba(212,160,23,0.3));">
-                            <div class="welcome-title">PENDAKWAH TEKNOLOGI AI</div>
-                            <div class="welcome-desc">Tanya apa sahaja berkaitan perkhidmatan Pendakwah Teknologi — latihan AI, keselamatan siber, pengeluaran video, transformasi digital dan banyak lagi.</div>
+                            <div class="welcome-title">ZAREL SEVAN AI</div>
+                            <div class="welcome-desc">Ask me anything about Zarel Sevan — products, pricing, orders, shipping, returns and more.</div>
                             <div class="chip-row">
-                                <button class="chip" onclick="askChip(this)">Apakah perkhidmatan Pendakwah Teknologi?</button>
-                                <button class="chip" onclick="askChip(this)">Kursus latihan AI yang ditawarkan</button>
-                                <button class="chip" onclick="askChip(this)">Perkhidmatan pengeluaran video</button>
-                                <button class="chip" onclick="askChip(this)">Perundingan transformasi digital</button>
-                                <button class="chip" onclick="askChip(this)">Bagaimana untuk menghubungi PT?</button>
-                                <button class="chip" onclick="askChip(this)">Keperluan HSE untuk kontraktor</button>
+                                <button class="chip" onclick="askChip(this)">What scents are available?</button>
+                                <button class="chip" onclick="askChip(this)">How much does it cost?</button>
+                                <button class="chip" onclick="askChip(this)">Is it in stock?</button>
+                                <button class="chip" onclick="askChip(this)">How long does delivery take?</button>
+                                <button class="chip" onclick="askChip(this)">How do I return an item?</button>
+                                <button class="chip" onclick="askChip(this)">How do I contact Zarel Sevan?</button>
+                                <button class="chip" onclick="window.open('https://wa.me/60146292068','_blank')" style="background:rgba(37,211,102,0.12);border-color:rgba(37,211,102,0.35);color:#25d366;">&#128172; Chat on WhatsApp</button>
                             </div>
                         </div>
                     </div>
 
                     <div class="chat-input-area">
                         <div class="input-row">
-                            <button class="btn-mic" id="micBtn" onclick="toggleMic()" title="Rakam suara">
+                            <button class="btn-mic" id="micBtn" onclick="toggleMic()" title="Record voice">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
                                     <path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/>
                                 </svg>
                             </button>
-                            <textarea id="qInput" placeholder="Taip soalan anda..." rows="1"
+                            <textarea id="qInput" placeholder="Ask anything..." rows="1"
                                       onkeydown="handleKey(event)" oninput="autoGrow(this)"></textarea>
                             <button class="btn-send" id="sendBtn" onclick="send()">
-                                <span>Hantar</span>
+                                <span>Send</span>
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                     <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
                                 </svg>
                             </button>
                         </div>
-                        <div class="input-hint">OpenAI GPT-4o &middot; Mesolitica Embeddings &middot; ChromaDB Hybrid Search</div>
+                        <div class="input-hint">DeepSeek &middot; Mesolitica Embeddings &middot; ChromaDB Hybrid Search</div>
                     </div>
                 </div>
             </div>
@@ -1198,7 +1245,7 @@
 
     <script>
     /*
-     * PT Chatbot — Chat Engine
+     * Zarel Sevan Chatbot — Chat Engine
      * Renders markdown from trusted backend only.
      * All content is HTML-escaped before transformation.
      */
@@ -1391,10 +1438,10 @@
             btn.appendChild(tpl.content.firstChild);
             var webCount = sources.filter(function(s) { return s.source_uri; }).length;
             var docCount = sources.length - webCount;
-            var label = ' Rujukan';
-            if (docCount > 0 && webCount > 0) label += ' (' + docCount + ' dokumen, ' + webCount + ' web)';
+            var label = ' References';
+            if (docCount > 0 && webCount > 0) label += ' (' + docCount + ' documents, ' + webCount + ' web)';
             else if (webCount > 0) label += ' (' + webCount + ' web)';
-            else label += ' Dokumen (' + docCount + ')';
+            else label += ' Documents (' + docCount + ')';
             var btnText = document.createTextNode(label);
             btn.appendChild(btnText);
             btn.addEventListener('click', function() {
@@ -1514,7 +1561,7 @@
             sec.className = 'followup-section';
             var lbl = document.createElement('div');
             lbl.className = 'followup-label';
-            lbl.textContent = 'Soalan Susulan';
+            lbl.textContent = 'Follow-up Questions';
             sec.appendChild(lbl);
             var row = document.createElement('div');
             row.className = 'followup-chips';
@@ -1530,6 +1577,36 @@
             });
             sec.appendChild(row);
             parent.appendChild(sec);
+        }
+
+        // --- Product cards ---
+        var ZS_PRODUCTS = {
+            'emerald apple': { name: 'Emerald Apple', price: 'RM25.00', img: 'https://zarelsevan.my/uploads/product-1778093521163.jpeg', url: 'https://zarelsevan.my' },
+            'citrus zeste':  { name: 'Citrus Zeste',  price: 'RM25.00', img: 'https://zarelsevan.my/uploads/product-1779105567966.jpeg', url: 'https://zarelsevan.my' },
+            'velvety peach': { name: 'Velvety Peach', price: 'RM25.00', img: 'https://zarelsevan.my/uploads/product-1778094133918.jpeg', url: 'https://zarelsevan.my' }
+        };
+
+        function addProductCards(replyText, parent) {
+            var lower = replyText.toLowerCase();
+            var matched = [];
+            Object.keys(ZS_PRODUCTS).forEach(function(key) {
+                if (lower.indexOf(key) !== -1) matched.push(ZS_PRODUCTS[key]);
+            });
+            if (!matched.length) return;
+            var row = document.createElement('div');
+            row.className = 'product-card-row';
+            matched.forEach(function(p) {
+                var card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = '<img src="' + p.img + '" alt="' + p.name + '" onerror="this.style.display=\'none\'">'
+                    + '<div class="product-card-info">'
+                    + '<div class="product-card-name">' + p.name + '</div>'
+                    + '<div class="product-card-price">' + p.price + ' · 50ml</div>'
+                    + '<a href="' + p.url + '" target="_blank" rel="noopener noreferrer" class="product-card-buy">Buy Now</a>'
+                    + '</div>';
+                row.appendChild(card);
+            });
+            parent.appendChild(row);
         }
 
         // --- Action toolbar (TTS + feedback + comment) ---
@@ -1619,12 +1696,12 @@
             bar.appendChild(div1);
 
             // -- Thumbs up --
-            var upBtn = makeBtn('thumbUp', 'Jawapan baik');
+            var upBtn = makeBtn('thumbUp', 'Good answer');
             if (feedback[msgId] && feedback[msgId].r === 'up') upBtn.classList.add('active-up');
             bar.appendChild(upBtn);
 
             // -- Thumbs down --
-            var dnBtn = makeBtn('thumbDown', 'Boleh diperbaiki');
+            var dnBtn = makeBtn('thumbDown', 'Needs improvement');
             if (feedback[msgId] && feedback[msgId].r === 'down') dnBtn.classList.add('active-down');
             bar.appendChild(dnBtn);
 
@@ -1644,7 +1721,7 @@
             cmtForm.className = 'fb-comment-form';
             var cmtInput = document.createElement('textarea');
             cmtInput.className = 'fb-comment-input';
-            cmtInput.placeholder = 'Tulis ulasan tentang jawapan ini...';
+            cmtInput.placeholder = 'Write a comment about this answer...';
             cmtInput.rows = 1;
             cmtInput.addEventListener('input', function() {
                 cmtInput.style.height = 'auto';
@@ -1652,7 +1729,7 @@
             });
             var cmtSend = document.createElement('button');
             cmtSend.className = 'fb-comment-send';
-            cmtSend.textContent = 'Hantar';
+            cmtSend.textContent = 'Submit';
             cmtForm.appendChild(cmtInput);
             cmtForm.appendChild(cmtSend);
             parent.appendChild(cmtForm);
@@ -1713,7 +1790,7 @@
                 cmtForm.classList.remove('open');
                 var sent = document.createElement('div');
                 sent.className = 'fb-sent';
-                sent.textContent = 'Ulasan dihantar. Terima kasih!';
+                sent.textContent = 'Feedback submitted. Thank you!';
                 parent.appendChild(sent);
                 setTimeout(function() { if (sent.parentNode) sent.parentNode.removeChild(sent); }, 3000);
             });
@@ -1837,10 +1914,11 @@
                 var old = cWrap.querySelectorAll('.ret-toggle,.ret-list,.msg-actions,.fb-comment-form,.eval-card,.followup-section');
                 old.forEach(function(el){el.parentNode.removeChild(el);});
                 if (sources) addSources(sources, cWrap);
+                addProductCards(full, cWrap);
                 addActionBar(bid, full, cWrap);
 
                 // Render self-eval and follow-ups from done event
-                if (streamEval) addEvalCard(streamEval, cWrap);
+                // self-eval hidden
                 if (streamFollowups && streamFollowups.length) addFollowupChips(streamFollowups, cWrap);
 
                 history.push({role:'bot',content:full,retrieval:sources,ts:bts,id:bid});
@@ -1858,26 +1936,28 @@
                         body: JSON.stringify({messages:p2})
                     });
                     if (!r2.ok) {
-                        var em = 'Maaf, ralat telah berlaku. Sila cuba semula.';
+                        var em = 'Sorry, an error occurred. Please try again.';
                         try { var ej = await r2.json(); if(ej.detail) em=ej.detail; } catch(x){}
                         addMsg('bot',em,null,bts,bid);
                         history.push({role:'bot',content:em,ts:bts,id:bid});
                     } else {
                         var d2 = await r2.json();
-                        var rp = d2.reply || 'Tiada respons diterima.';
+                        var rp = d2.reply || 'No response received.';
                         addMsg('bot',rp,d2.retrieval,bts,bid);
+                        var fbWrap = document.getElementById(bid);
+                        if (fbWrap) addProductCards(rp, fbWrap.closest('.msg'));
                         history.push({role:'bot',content:rp,retrieval:d2.retrieval,ts:bts,id:bid});
                     }
                     saveHistory();
                 } catch(e2) {
-                    var msg = 'Maaf, ralat rangkaian. Sila cuba semula.';
+                    var msg = 'Network error. Please try again.';
                     addMsg('bot',msg,null,bts,bid);
                     history.push({role:'bot',content:msg,ts:bts,id:bid});
                     saveHistory();
                 }
             } finally {
                 sendBtn.disabled = false;
-                sendBtn.querySelector('span').textContent = 'Hantar';
+                sendBtn.querySelector('span').textContent = 'Send';
                 qInput.focus();
             }
         }
