@@ -12,6 +12,7 @@ Zarel Sevan is a Malaysian e-commerce store operating on TikTok Shop. We offer q
 - Nationwide delivery to Peninsular Malaysia, Sabah, and Sarawak
 - Estimated delivery: 3–7 business days (depending on location)
 - Couriers: J&T Express, Pos Laju, or other couriers depending on stock and location
+- **Shipping fee:** RM5 (Peninsular Malaysia) · RM8 (Sabah & Sarawak)
 
 ## How to Buy
 1. Search "Zarel Sevan" on TikTok Shop
@@ -53,6 +54,12 @@ Bundle discounts can be combined with active promo codes. If there is a running 
 **Buying more than 3 bottles?** Place your order in batches of 3. Complete one order of 3 bottles first, then place a new separate order for the next batch. Each order of 3 qualifies for 15% off, so you keep saving no matter how many bottles you need.
 
 ## Frequently Asked Questions (FAQ)
+
+**What is the shipping fee?**
+RM5 for Peninsular Malaysia. RM8 for Sabah and Sarawak.
+
+**Can I change my delivery address after my item has been shipped?**
+No. Once your order has been shipped, the courier will deliver to the registered address on the order. Please ensure your address is correct before confirming your purchase.
 
 **Is COD available?**
 COD is available for selected areas only. Check at checkout.
