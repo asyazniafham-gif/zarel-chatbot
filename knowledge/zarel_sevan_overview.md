@@ -9,10 +9,20 @@ Zarel Sevan is a Malaysian e-commerce store operating on TikTok Shop. We offer q
 - **Website**: https://zarelsevan.my
 
 ## Shipping
+
 - Nationwide delivery to Peninsular Malaysia, Sabah, and Sarawak
 - Estimated delivery: 3–7 business days (depending on location)
 - Couriers: J&T Express, Pos Laju, or other couriers depending on stock and location
-- **Shipping fee:** RM5 (Peninsular Malaysia) · RM8 (Sabah, Sarawak & rural areas — RM5 base + RM3 surcharge)
+
+### Shipping Fees
+
+| Destination | Fee |
+|---|---|
+| Peninsular Malaysia | RM5 |
+| Sabah & Sarawak (East Malaysia) | RM8 (RM5 base + RM3 additional) |
+| Rural areas | RM5 base + additional charges — contact us for exact rate |
+
+There is an **additional RM3 shipping surcharge** for deliveries to Sabah and Sarawak. For rural areas, additional shipping charges may apply depending on the location — customers should contact us before ordering to confirm the exact rate.
 
 ## How to Buy
 1. Search "Zarel Sevan" on TikTok Shop
@@ -56,7 +66,19 @@ Bundle discounts can be combined with active promo codes. If there is a running 
 ## Frequently Asked Questions (FAQ)
 
 **What is the shipping fee?**
-Standard shipping is RM5 for Peninsular Malaysia. For Sabah, Sarawak, and rural areas, there is an additional RM3 surcharge on top of the standard RM5 — totalling RM8.
+Standard shipping is RM5 for Peninsular Malaysia. For Sabah and Sarawak (East Malaysia), there is an additional RM3 surcharge — total RM8. For rural areas, additional charges may apply; please contact us to confirm before ordering.
+
+**Is there an additional shipping fee for Sabah and Sarawak?**
+Yes. There is an additional RM3 shipping fee for Sabah and Sarawak. Total shipping cost is RM8 (RM5 base + RM3 surcharge).
+
+**Is there an additional shipping fee for rural areas?**
+Yes, rural areas may incur additional shipping charges on top of the standard RM5. The exact amount depends on the location. Please contact us at admin@zarelsevan.my or WhatsApp +60146292068 before ordering so we can confirm the rate for your area.
+
+**How much is shipping to East Malaysia?**
+Shipping to Sabah and Sarawak (East Malaysia) is RM8 — that is the standard RM5 shipping fee plus an additional RM3 surcharge.
+
+**Do you charge extra for delivery to Sabah, Sarawak, or rural areas?**
+Yes. Sabah and Sarawak: RM3 extra on top of RM5 standard shipping = RM8 total. Rural areas: additional charges apply depending on location — contact us to confirm the exact rate before placing your order.
 
 **Can I change my delivery address after my item has been shipped?**
 No. Once your order has been shipped, the courier will deliver to the registered address on the order. Please ensure your address is correct before confirming your purchase.
