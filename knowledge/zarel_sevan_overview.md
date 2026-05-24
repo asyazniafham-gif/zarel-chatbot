@@ -44,9 +44,11 @@ Zarel Sevan is a Malaysian e-commerce store operating on TikTok Shop. We offer q
 
 Save more when you buy more:
 - **Buy 2 bottles:** 10% off
-- **Buy 3 bottles:** 15% off
+- **Buy 3 bottles:** 15% off *(best value)*
 
 Bundle deals apply to any combination of scents (Emerald Apple, Citrus Zeste, Velvety Peach).
+
+**Buying more than 3 bottles?** Place your order in batches of 3. Complete one order of 3 bottles first, then place a new separate order for the next batch. Each order of 3 qualifies for 15% off, so you keep saving no matter how many bottles you need.
 
 ## Frequently Asked Questions (FAQ)
 

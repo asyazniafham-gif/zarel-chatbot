@@ -6,7 +6,7 @@ ZAREL SEVAN Luxury Car Perfume is a 50ml long-lasting car air freshener, availab
 
 - **Price:** RM30.00 per bottle (discounted to RM25.00)
 - **Size:** 50ml
-- **Status:** In stock (1,000 units per variant)
+- **Status:** In stock
 - **Available on:** TikTok Shop and zarelsevan.my
 
 ---
